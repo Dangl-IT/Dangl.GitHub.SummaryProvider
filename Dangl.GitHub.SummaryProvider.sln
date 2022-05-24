@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHub.SummaryProvider", "GitHub.SummaryProvider\GitHub.SummaryProvider.csproj", "{5A8E590F-B5EE-43EF-A4AD-684C9A5B1491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dangl.GitHub.SummaryProvider", "src\Dangl.GitHub.SummaryProvider\Dangl.GitHub.SummaryProvider.csproj", "{5A8E590F-B5EE-43EF-A4AD-684C9A5B1491}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{72F2E972-EE3C-47A7-88CF-3CD745BA4541}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +20,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A8E590F-B5EE-43EF-A4AD-684C9A5B1491} = {72F2E972-EE3C-47A7-88CF-3CD745BA4541}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {98C29ABB-4E87-461A-ADCB-26B65E27FC92}
