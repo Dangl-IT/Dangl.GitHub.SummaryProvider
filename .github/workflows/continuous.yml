@@ -1,0 +1,21 @@
+name: continuous
+
+on: [push]
+
+jobs:
+  windows-2019:
+    name: windows-latest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run './build.cmd PublishGitHubRelease'
+        run: ./build.cmd PublishGitHubRelease
+        env:
+            GitHubAuthenticationToken: ${{ secrets.GITHUB_TOKEN }}
+  ubuntu-latest:
+    name: ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run './build.cmd Compile'
+        run: ./build.cmd Compile
