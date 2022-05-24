@@ -66,6 +66,8 @@ public class GitHubRepoInspector
                 var mergedPullRequest = GetMergedPullRequestFromGitHubApiObject(jsonElement);
                 mergedPullRequests.Add(mergedPullRequest);
             }
+
+            Console.WriteLine($"Total pull requests: {mergedPullRequests.Count}");
         }
 
         return mergedPullRequests;
@@ -113,6 +115,8 @@ public class GitHubRepoInspector
                     commits.Add(commit);
                 }
             }
+
+            Console.WriteLine($"Total commits: {commits.Count}");
         }
 
         return commits;
