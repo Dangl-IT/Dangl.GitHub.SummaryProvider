@@ -134,6 +134,7 @@ public static class VersionInfo
 
     Target PublishGitHubRelease => _ => _
          .Requires(() => GitHubAuthenticationToken)
+         .DependsOn(Publish)
          .OnlyWhenDynamic(() => GitVersion.BranchName.Equals("main") || GitVersion.BranchName.Equals("origin/main"))
          .Executes(async () =>
          {
@@ -146,12 +147,16 @@ public static class VersionInfo
 
              var repositoryInfo = GetGitHubRepositoryInfo(GitRepository);
 
+             var assets = GlobFiles(OutputDirectory, "*.zip").ToArray();
+             Assert.NotEmpty(assets);
+
              await PublishRelease(x => x
                      .SetCommitSha(GitVersion.Sha)
                      .SetReleaseNotes(completeChangeLog)
                      .SetRepositoryName(repositoryInfo.repositoryName)
                      .SetRepositoryOwner(repositoryInfo.gitHubOwner)
                      .SetTag(releaseTag)
+                     .SetArtifactPaths(assets)
                      .SetToken(GitHubAuthenticationToken));
          });
 }
