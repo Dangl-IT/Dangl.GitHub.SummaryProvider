@@ -15,7 +15,9 @@ await Parser.Default.ParseArguments<ExportOptions>(args)
                 options.GitHubRepository!,
                 options.DevelopBranch!,
                 options.GitHubPersonalAccessToken!);
+            Console.WriteLine("Inspecting GitHub repository, getting all commits...");
             var commits = await repoInspector.GetCommitsForDevelopBranchAsync();
+            Console.WriteLine("Getting all pull requests...");
             var pullRequests = await repoInspector.GetPullRequestDataAsync();
 
             var allActions = commits.Select(c => new RepoAction { Date = c.AuthoredDate, Content = c })
@@ -23,6 +25,7 @@ await Parser.Default.ParseArguments<ExportOptions>(args)
 
             var outputFilePath = Path.Combine(options.ExportBaseFolder!, $"{options.DocumentExportYear:0000}-{options.DocumentExportMonth:00} GitHubExport.txt");
             var summaryExporter = new SummaryExporter(allActions, outputFilePath, options.DocumentExportYear, options.DocumentExportMonth);
+            Console.WriteLine($"Writing output to: {outputFilePath}");
             await summaryExporter.ExportSummaryAsync();
         }
         catch (Exception e)
