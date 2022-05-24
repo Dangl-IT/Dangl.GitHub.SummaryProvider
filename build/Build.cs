@@ -134,7 +134,7 @@ public static class VersionInfo
 
     Target PublishGitHubRelease => _ => _
          .Requires(() => GitHubAuthenticationToken)
-         .OnlyWhenDynamic(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
+         .OnlyWhenDynamic(() => GitVersion.BranchName.Equals("main") || GitVersion.BranchName.Equals("origin/main"))
          .Executes(async () =>
          {
              var releaseTag = $"v{GitVersion.MajorMinorPatch}";
