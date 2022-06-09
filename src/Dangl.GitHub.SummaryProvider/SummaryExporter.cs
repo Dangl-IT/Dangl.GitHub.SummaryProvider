@@ -42,7 +42,6 @@
             }
             else if (repoAction.Content is MergedPullRequest pullRequest)
             {
-
                 await fs.WriteLineAsync($"#{pullRequest.Number}: {pullRequest.Title}");
                 await fs.WriteLineAsync($"  Commits gesamt: {pullRequest.NumberOfCommits}");
                 await fs.WriteLineAsync($"  Fertiggestellt: {pullRequest.MergedAt.ToLocalTime():dd.MM.yyyy HH:mm}");
@@ -61,6 +60,8 @@
             {
                 throw new NotImplementedException();
             }
+
+            await fs.WriteLineAsync();
         }
     }
 }
