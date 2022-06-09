@@ -13,4 +13,6 @@
     public int Deletions { get; set; }
 
     public int Additions { get; set; }
+
+    public string ObjectId { get; set; }
 }

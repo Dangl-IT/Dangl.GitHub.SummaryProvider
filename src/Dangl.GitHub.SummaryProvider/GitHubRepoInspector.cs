@@ -109,11 +109,8 @@ public class GitHubRepoInspector
             var elementsArray = parsedArray["data"]!["repository"]!["ref"]!["target"]!["history"]!["edges"] as JArray;
             foreach (var jsonElement in elementsArray!.OfType<JObject>())
             {
-                var commit = GetCommitFromGitHubApiObject(jsonElement as JObject);
-                if (commit?.HasPullRequestAssociated == true)
-                {
-                    commits.Add(commit);
-                }
+                var commit = GetCommitFromGitHubApiObject(jsonElement)!;
+                commits.Add(commit);
             }
 
             Console.WriteLine($"Total commits: {commits.Count}");
@@ -136,14 +133,15 @@ public class GitHubRepoInspector
                       }}
                       edges {{
                           node {{
-                              message
+                                oid
+                                message
                                 abbreviatedOid
-                              authoredDate
+                                authoredDate
                                 additions
                                 deletions
                                 changedFiles
-                              associatedPullRequests  {{
-                                  totalCount
+                                associatedPullRequests  {{
+                                totalCount
                               }}
                           }}
                       }}
@@ -175,8 +173,13 @@ public class GitHubRepoInspector
         author {{
           login
         }},
-        commits  {{
+        commits(first: 100)  {{
           totalCount
+          nodes {{
+            commit {{
+              oid
+            }}
+          }}
         }}
         deletions
         additions
@@ -201,6 +204,7 @@ public class GitHubRepoInspector
         {
             var commit = new Commit
             {
+                ObjectId = gitHubApiObject["node"]!["oid"]!.ToString(),
                 Message = gitHubApiObject["node"]!["message"]!.ToString(),
                 AuthoredDate = gitHubApiObject["node"]!["authoredDate"]!.ToObject<DateTimeOffset>(),
                 HasPullRequestAssociated = gitHubApiObject["node"]!["associatedPullRequests"]!["totalCount"]!.Value<int>() > 0,
@@ -234,7 +238,8 @@ public class GitHubRepoInspector
                 Title = x["title"]!.ToString(),
                 Number = x["number"]!.ToObject<int>()
             })
-            .ToList()
+            .ToList(),
+            CommitObjectIds = (gitHubApiObject["commits"]!["nodes"] as JArray)!.Select(commit => commit["commit"]!["oid"]!.ToString()).ToList()
         };
 
         return mergedPullRequest;

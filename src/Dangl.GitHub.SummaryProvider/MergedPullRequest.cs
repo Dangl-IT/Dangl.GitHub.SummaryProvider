@@ -15,4 +15,6 @@
     public int Additions { get; set; }
 
     public List<ClosedIssue>? ClosedIssues { get; set; }
+
+    public List<string> CommitObjectIds { get; set; }
 }

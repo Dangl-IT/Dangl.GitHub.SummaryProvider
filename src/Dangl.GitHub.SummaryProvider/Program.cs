@@ -20,7 +20,10 @@ await Parser.Default.ParseArguments<ExportOptions>(args)
             Console.WriteLine("Getting all pull requests...");
             var pullRequests = await repoInspector.GetPullRequestDataAsync();
 
-            var allActions = commits.Select(c => new RepoAction { Date = c.AuthoredDate, Content = c })
+            var allActions = commits
+                .Where(c => !pullRequests.Any(pr => pr.CommitObjectIds.Contains(c.ObjectId))
+                    && !(c.Message?.StartsWith("Merge pull request #") ?? false))
+                .Select(c => new RepoAction { Date = c.AuthoredDate, Content = c })
                 .Concat(pullRequests.Select(p => new RepoAction { Date = p.MergedAt, Content = p }));
 
             var outputFilePath = Path.Combine(options.ExportBaseFolder!, $"{options.DocumentExportYear:0000}-{options.DocumentExportMonth:00} GitHubExport.txt");
